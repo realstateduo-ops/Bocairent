@@ -238,6 +238,9 @@
     cursor: pointer; transition: background 0.3s, transform 0.2s; align-self: flex-start;
   }
   .btn-submit:hover { background: var(--off-white); transform: translateY(-2px); }
+  .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+  [data-fs-error] { font-size: 11px; color: #c0392b; letter-spacing: 1px; display: block; margin-top: 4px; min-height: 0; }
+  [data-fs-success] { display: none; font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; line-height: 1.4; padding: 24px 0; }
 
   footer {
     padding: 32px 72px; border-top: 1px solid var(--border);
@@ -494,36 +497,59 @@
       <span data-lang="en">Leave your details and we will be in touch to arrange a visit or answer any questions.</span>
     </p>
   </div>
-  <form class="contact-form reveal" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-    <div class="form-row">
-      <input type="text" name="name" placeholder="Nombre / Name" required>
-      <input type="email" name="email" placeholder="Email" required>
+  <div>
+    <div data-fs-success>
+      <span data-lang="es">Gracias, nos pondremos en contacto en breve.</span>
+      <span data-lang="en">Thank you, we'll be in touch shortly.</span>
     </div>
-    <input type="tel" name="phone" placeholder="Teléfono / Phone">
-    <select name="interest">
-      <option value="" disabled selected>Interés / Interest</option>
-      <option value="hotel">Hotel / Boutique Hotel</option>
-      <option value="events">Bodas y Eventos / Weddings & Events</option>
-      <option value="wellness">Retiro / Wellness Retreat</option>
-      <option value="investment">Inversión / Investment</option>
-      <option value="other">Otro / Other</option>
-    </select>
-    <textarea name="message" placeholder="Mensaje / Message"></textarea>
-    <button type="submit" class="btn-submit">
-      <span data-lang="es">Enviar consulta</span>
-      <span data-lang="en">Send enquiry</span>
-    </button>
-  </form>
+    <div data-fs-error></div>
+    <form id="contact-form" class="contact-form reveal" action="https://formspree.io/f/xlgvdywd" method="POST">
+      <div class="form-row">
+        <div>
+          <input type="text" name="name" placeholder="Nombre / Name" required data-fs-field>
+          <span data-fs-error="name"></span>
+        </div>
+        <div>
+          <input type="email" name="email" placeholder="Email" required data-fs-field>
+          <span data-fs-error="email"></span>
+        </div>
+      </div>
+      <input type="tel" name="phone" placeholder="Teléfono / Phone" data-fs-field>
+      <select name="interest" data-fs-field>
+        <option value="" disabled selected>Interés / Interest</option>
+        <option value="hotel">Hotel / Boutique Hotel</option>
+        <option value="events">Bodas y Eventos / Weddings & Events</option>
+        <option value="wellness">Retiro / Wellness Retreat</option>
+        <option value="investment">Inversión / Investment</option>
+        <option value="other">Otro / Other</option>
+      </select>
+      <textarea name="message" placeholder="Mensaje / Message" data-fs-field></textarea>
+      <span data-fs-error="message"></span>
+      <button type="submit" class="btn-submit" data-fs-submit-btn>
+        <span data-lang="es">Enviar consulta</span>
+        <span data-lang="en">Send enquiry</span>
+      </button>
+    </form>
+  </div>
 </section>
 
 <footer>
   <p>© 2025 Finca Rural Bocairent · Ref. 03902</p>
-  <a href="https://www.idealista.com/inmueble/111483460/" target="_blank" style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--light-gray);text-decoration:none;display:flex;align-items:center;gap:8px;">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-    Idealista
-  </a>
+  <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+    <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--light-gray);">Duo Realstate</span>
+    <span style="width:1px;height:16px;background:var(--border);display:inline-block;"></span>
+    <a href="https://rksirval.es" target="_blank" style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--light-gray);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--light-gray)'">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      RK Sirvalinmobiliaria
+    </a>
+  </div>
 </footer>
 
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'xlgvdywd' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 <script>
   function setLang(lang) {
     document.body.classList.toggle('lang-en', lang === 'en');
